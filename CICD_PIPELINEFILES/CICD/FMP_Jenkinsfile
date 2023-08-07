@@ -50,7 +50,7 @@ CICD_JAVA_TEMPLATE (this) {
 	
 	
 	// ============== Build Artifact & Staging
-	BUILD_MANIFEST="FirstMavenProject/first-app/target/first-app.war
+	BUILD_MANIFEST="FirstMavenProject/first-app/target/first-app.war"
 	BUILD_MANIFEST_NON_FLATTEN="" 	//This example has both non-flaten files and folder
 	REPOSITORY_PACKAGE_TYPE="zip"
 	REPOSITORY_PACKAGE_VERSION="1.0"
