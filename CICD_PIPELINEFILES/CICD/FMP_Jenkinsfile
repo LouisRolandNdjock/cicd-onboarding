@@ -69,7 +69,7 @@ CICD_JAVA_TEMPLATE (this) {
 		BUILD_NODE=""							// Update the worker name as applicable
 		
 		// ======== SCM Settings ============================
-		BUILD_DEFINITION_ID="CBS_DATA_TRAINING_CICD_SBX_BD"
+		BUILD_DEFINITION_ID=""
 		CREDENTIAL_ID=""
 		RTC_WORKSPACE=""
 		CREATE_FOLDERS_FOR_RTC_COMPONENTS=""
