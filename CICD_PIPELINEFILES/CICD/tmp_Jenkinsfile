@@ -4,6 +4,10 @@ pipeline {
   
   stages{
     stage ('B. Maven Build'){ 
+        tools {
+                maven '3.8.8'
+                jdk 'JDK-11.0.20'
+            }
       steps{
         sh 'cd helloworld17/demo/ && mvn clean package'
       }
