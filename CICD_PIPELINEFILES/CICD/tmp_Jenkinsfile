@@ -3,9 +3,9 @@ pipeline {
   agent any
   
   stages{
-    stage ('Build'){ 
+    stage ('B. Maven Build'){ 
       steps{
-        echo "Building the project"
+        sh 'cd FirstMavenProject/first-app && mvn clean package'
       }
     }
   }
