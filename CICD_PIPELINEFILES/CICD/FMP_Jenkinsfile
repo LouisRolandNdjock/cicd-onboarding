@@ -1,0 +1,132 @@
+/*
+  Purpose: This is the CICD Standard Jenkinsfile for Tier II Java application
+  to perform all 10 stages of CICD pipeline.
+  
+  Please change the values according to your project needs.
+  
+  Author: Rupesh Kumar
+  Edited: Louis Ndjock
+
+*/
+
+CICD_JAVA_TEMPLATE (this) {
+	
+	// ===== Project Information ====
+	PROGRAM_NAME="CICD"			// This is needed for pipelines that reside inside their ProgramName folder
+	PROJECT_NAME="FirstMavenProject"			// This should be specific to each pipeline
+	PROJECT_ROOT="cicd-onboarding/FirstMavenProject"
+	JUNIT_ROOT=""
+	CICD_POC="lrndjock@gmail.com"			// Email of the CICD lead who works on this project
+	PROJECT_POC="louisndjock@yahoo.com"
+	
+	// ======== SCM Settings  ============
+	SCM_TYPE="GIT"
+	GIT_REPO_URL="https://github.com/LouisRolandNdjock/cicd-onboarding.git"
+	
+	// ======= Build Settings =============
+	BUILD_TOOL="MAVEN" 
+	MAVEN_GOALS="clean install package"
+	MAVEN_OPTS=""
+	BUILD_TOOLKIT="Build_Toolkit_6.0.4"
+	JAVA_VERSION="11.0.20"
+	MAVEN_VERSION="3.8.8"
+	
+	// =======  Shared Components Settings ===============
+	SHARED_COMPONENT=""
+	HAS_PARENT_POM=""										// "true", "false"
+	SHARED_COMPONENT_RELEASE_VERSION=""						//"1.0"
+	
+	// ========== Code Coverage Settings ==========================
+	CODE_COVERAGE_TYPE="JACOCO"
+	JACOCO_EXECLUSION_PATTERN="**/src/test/**/*"
+	
+	// ====== Code Quality Settings ============================
+	QUALITY_SCAN_TYPE="SONAR"
+	PROJECT_KEY="CBS.ENTITY"
+	SONAR_MODULES=""				// cbs-commons,cbs-command-codes, cbs-soap-messages,cbs-entity
+	
+	// =============== Security Scan Settings ==================
+	SECURITY_SCAN_TYPE="APPSCAN"
+	
+	
+	// ============== Build Artifact & Staging
+	BUILD_MANIFEST="FirstMavenProject/first-app/target/first-app.war
+	BUILD_MANIFEST_NON_FLATTEN="" 	//This example has both non-flaten files and folder
+	REPOSITORY_PACKAGE_TYPE="zip"
+	REPOSITORY_PACKAGE_VERSION="1.0"
+	REPOSITORY_STAGING_POM_FILENAME="pom.xml"				//"cssr-pom.xml
+	GROUP_ID="com.louis"
+	ARTIFACT_ID="first-app"
+	
+	// =========== Deployment Settings ===================
+	DEPLOY_TYPE="JBOSS"						//"JBOSS" or "WEBLOGIC" or "BATCH"
+	DEPLOY_PROPERTY_FILE="deployment.properties"
+	
+	SBX (this) {
+		//  ============= Generale Settings =================
+		PATCH_JOB="true"
+		EMAIL_RECIPIENTS="lrndjock@gmail"
+		BUILD_NODE=""							// Update the worker name as applicable
+		
+		// ======== SCM Settings ============================
+		BUILD_DEFINITION_ID="CBS_DATA_TRAINING_CICD_SBX_BD"
+		CREDENTIAL_ID=""
+		RTC_WORKSPACE=""
+		CREATE_FOLDERS_FOR_RTC_COMPONENTS=""
+		LOAD_RTC_DIRECTORY="."
+		CC_CONFIG_SPEC=""
+		CC_LOAD_RULES=""
+		CC_STREAM=""
+		
+		// ======== Build Settings =====================
+		BUILD_ARGS="-Dmaven.test.failure.ignore=true -Dmaven.test.skip=false"
+		BUILD_TRIGGER="7"
+		
+		// ======== Code Coverage Settings ============
+		JACOCO_THRESHOLD="0"
+		
+		// ====== Code Quality Settings ============
+		SONAR_BUG_THRESHOLD="0"
+		SONAR_VULNERABILITIES_THRESHOLD="0"
+		
+		// ============ AppScan Settings ================
+		APPSCAN_REPORT_RECIPIENTS="lrsndjock@gmail.com"
+		AUTO_PPF_GENERATION="false"
+		APPSCAN_HIGH_THRESHOLD="0"
+		APPSCAN_MEDIUM_THRESHOLD="0"
+		APPSCAN_LOW_THRESHOLD="0"
+		
+		// ========== Nexus IQ Scan settings =================
+		NEXUS_IQ_APP_ID=""				// Provided by Nexus team
+		NEXUS_IQ_THRESHOLD=""
+		
+		// ================ Nexus Settings ====================
+		REPOSITORY_PUSH_TYPE=""
+		STAGING_PROFILE_ID=""
+		NEXUS_SNAPSHOT_ID=""
+		BUILD_TYPE=""
+		
+		//  ======= Deployment Settings ========================
+		APPLICATION_SERVER_CREDENTIAL_ID=""
+		TARGET_ENV="sbx"
+		
+		// ====== Stage Control Settings  ===========
+		SKIP_STAGE_A="false"
+		SKIP_STAGE_B="false"
+		SKIP_STAGE_C="false"
+		SKIP_STAGE_D="false"
+		SKIP_STAGE_E="true"
+		SKIP_STAGE_F="false"
+		SKIP_CI_PIPELINE="false"
+		SKIP_STAGE_G="false"
+		SKIP_STAGE_H="false"
+		SKIP_STAGE_I="false"
+		SKIP_STAGE_J="false"
+		SKIP_STAGE_K="false"
+		HIDE_AUTOMATED_TEST_STAGE=""
+		SKIP_RHAMT_SCAN="false"
+
+	}
+	
+ 
+}
