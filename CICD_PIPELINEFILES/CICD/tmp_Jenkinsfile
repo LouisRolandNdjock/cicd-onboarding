@@ -5,7 +5,7 @@ pipeline {
   stages{
     stage ('B. Maven Build'){ 
       steps{
-        sh 'cd FirstMavenProject/first-app/ && mvn clean package'
+        sh 'cd helloworld17/demo/ && mvn clean package'
       }
     }
   }
