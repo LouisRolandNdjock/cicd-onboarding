@@ -1,0 +1,73 @@
+pipeline {
+    agent any
+
+    environment {
+        MAVEN_HOME = tool '3.8.8'
+        JAVA_HOME = tool 'JDK-11.0.20'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh "${MAVEN_HOME}/bin/mvn clean package"
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh "${MAVEN_HOME}/bin/mvn test"
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('SonarQube') {
+                    sh "${MAVEN_HOME}/bin/mvn sonar:sonar"
+                }
+            }
+        }
+
+        stage('JaCoCo Report') {
+            steps {
+                sh "${MAVEN_HOME}/bin/mvn jacoco:report"
+                jacocoReportPath = "${env.WORKSPACE}/target/site/jacoco/index.html"
+                publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: true, reportDir: "target/site/jacoco", reportFiles: "index.html", reportName: "JaCoCo Report"])
+            }
+        }
+
+        stage('Deploy to Nexus') {
+            steps {
+                script {
+                    def server = Artifactory.server 'Nexus'
+                    def buildInfo = Artifactory.newBuildInfo()
+
+                    buildInfo.env.capture = true
+                    buildInfo.name = "${env.JOB_NAME} ${env.BUILD_NUMBER}"
+                    buildInfo.number = env.BUILD_NUMBER
+
+                    def uploadSpec = """{
+                        "files": [
+                            {
+                                "pattern": "${env.WORKSPACE}/target/*.jar",
+                                "target": "maven-repo-local/${env.JOB_NAME}/${env.BUILD_NUMBER}/"
+                            }
+                        ]
+                    }"""
+
+                    server.upload(uploadSpec)
+
+                    buildInfo.retention maxBuilds: 10, maxDays: 7
+
+                    buildInfo.env.capture = false
+                    buildInfo.publish()
+                }
+            }
+        }
+    }
+}
